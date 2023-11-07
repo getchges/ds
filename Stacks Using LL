@@ -1,0 +1,82 @@
+#include <stdio.h>
+#define max 100
+
+struct stack {
+    int s[max];
+    int top;
+} s1;
+
+void push(int x) {
+    if (s1.top == max - 1)
+        printf("Overflow\n");
+    else
+        s1.s[++s1.top] = x;
+}
+
+int pop() {
+    int x;
+    if (s1.top == -1) {
+        printf("Underflow\n");
+        return -1;
+    } else {
+        x = s1.s[s1.top];
+        s1.top--;
+        return x;
+    }
+}
+
+void peep() {
+    if (s1.top == -1)
+        printf("Stack is empty\n");
+    else
+        printf("%d\n", s1.s[s1.top]);
+}
+
+int isempty() {
+    return (s1.top == -1);
+}
+
+int count() {
+    return (s1.top + 1);
+}
+
+int main() {
+    int choice, val;
+
+    s1.top = -1;
+
+        printf("1. Push\n2. Pop\n3. Peep\n4. Check if empty\n5. Number of elements\n6. Exit\n");
+    while (1) {
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter val: ");
+                scanf("%d", &val);
+                push(val);
+                break;
+            case 2:
+                val = pop();
+                if (val != -1)
+                    printf("Popped val: %d\n", val);
+                break;
+            case 3:
+                peep();
+                break;
+            case 4:
+                if (isempty())
+                    printf("Stack is empty\n");
+                else
+                    printf("Stack is not empty\n");
+                break;
+            case 5:
+                printf("Number of elements in stack: %d\n", count());
+                break;
+            case 6:
+                return 0;
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+}
