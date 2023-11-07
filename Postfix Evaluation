@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <math.h>
+#define max 100
+int top=-1;
+int stack[max];
+void push(int x)
+{
+    if(top==max-1)
+        printf("Stack Overflow");
+    else {
+        ++top;
+        stack[top]=x;
+    }
+}
+
+int pop() {
+    int x;
+    if (top == -1) {
+        printf("Underflow\n");
+        return -1;
+    } else {
+        x = stack[top];
+        top--;
+        return x;
+    }
+}
+
+int main()
+{
+    char exp[100];
+    int i,n1,n2;
+    printf("enter postfix exp: ");
+    scanf("%s",&exp);
+    i=0;
+    while(exp[i]!='\0')
+    {
+        if(exp[i]>'0'&&exp[i]<='9')
+            push(exp[i]);
+        else
+        {
+            n1=pop();
+            n2=pop();
+            switch(exp[i])
+            {
+                case'+':push(n1+n2);
+                break;
+                case'-':push(n1-n2);
+                break;
+                case'*':push(n1*n2);
+                break;
+                case'/':push(n1/n2);
+                break;
+                case'$':push(pow(n1,n2));
+                break;
+            
+
+            }
+        }
+        i++;
+    
+    }
+    printf("the value is %d",pop());
+}
