@@ -1,0 +1,111 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct queue {
+    int data;
+    struct queue *next;
+};
+
+struct queue *start = NULL;
+struct queue *rear = NULL;
+struct queue *front = NULL;
+
+struct queue *create() {
+    struct queue *new = (struct queue *)malloc(sizeof(struct queue));
+    new->next = NULL;
+    return new;
+}
+
+void enqueue(int x) {
+    struct queue *temp;
+    if (start == NULL) {
+        temp = create();
+        temp->data = x;
+        rear = temp;
+        front = temp;
+        start = temp;
+    } else {
+        temp = create();
+        temp->data = x;
+        rear->next = temp;
+        rear = temp;
+    }
+}
+
+int dequeue() {
+    int x = -1;
+    struct queue *t;
+    if (start == NULL)
+        printf("The queue is empty\n");
+    else {
+        x = front->data;
+        front = front->next;
+        t = start;
+        start = front;
+        t->next = NULL;
+        free(t);
+    }
+    return x;
+}
+
+void display() {
+    struct queue *s;
+    s = front;
+    printf("Queue: ");
+    while (s->next != NULL) {
+        printf("%d ", s->data);
+        s = s->next;
+    }
+    printf("\n");
+}
+
+int isempty() {
+    return (start == NULL);
+}
+
+int count() {
+    int count = 0;
+    struct queue *s = front;
+    while (s->next != NULL) {
+        count++;
+        s = s->next;
+    }
+    return count;
+}
+
+int main() {
+    int ch, e;
+        printf("\n1. Enqueue\n2. Dequeue\n3. Display\n4. Check if empty\n5. Number of elements\n6. Exit\n");
+    while (1) {
+        printf("Your Choice: ");
+        scanf("%d", &ch);
+        switch (ch) {
+            case 1:
+                printf("Enter element: ");
+                scanf("%d", &e);
+                enqueue(e);
+                break;
+            case 2:
+                e = dequeue();
+                if (e != -1)
+                    printf("deleted element: %d\n", e);
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                if (isempty())
+                    printf("Queue is empty\n");
+                else
+                    printf("Queue is not empty\n");
+                break;
+            case 5:
+                printf("Number of elements in queue: %d\n", count());
+                break;
+            case 6:
+                exit(0);
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+}
