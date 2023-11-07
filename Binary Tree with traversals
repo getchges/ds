@@ -1,0 +1,72 @@
+//Binary Tree with Traversals:
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+void inorder(struct Node* root) {
+    if (root == NULL)
+        return;
+    inorder(root->left);
+    printf("%d ", root->data);
+    inorder(root->right);
+}
+
+void preorder(struct Node* root) {
+    if (root == NULL)
+        return;
+    printf("%d ", root->data);
+    preorder(root->left);
+    preorder(root->right);
+}
+
+void postorder(struct Node* root) {
+    if (root == NULL)
+        return;
+    postorder(root->left);
+    postorder(root->right);
+    printf("%d ", root->data);
+}
+
+int main() {
+    struct Node* root = NULL;
+    int n, data;
+
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+
+    printf("Enter the elements to construct a binary tree:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &data);
+        if (root == NULL) {
+            root = createNode(data);
+        } else {
+            struct Node* newNode = createNode(data);
+            newNode->left = root->left;
+            root->left = newNode;
+        }
+    }
+
+    printf("Inorder traversal: ");
+    inorder(root);
+
+    printf("\nPreorder traversal: ");
+    preorder(root);
+
+    printf("\nPostorder traversal: ");
+    postorder(root);
+
+    return 0;
+}
