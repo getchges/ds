@@ -1,0 +1,69 @@
+// Binary Search Tree with Search Operations:
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+struct Node* insert(struct Node* root, int data) {
+    if (root == NULL)
+        return createNode(data);
+    
+    if (data < root->data)
+        root->left = insert(root->left, data);
+    else if (data > root->data)
+        root->right = insert(root->right, data);
+    
+    return root;
+}
+
+struct Node* search(struct Node* root, int key) {
+    if (root == NULL || root->data == key)
+        return root;
+    
+    if (key < root->data)
+        return search(root->left, key);
+    
+    return search(root->right, key);
+}
+
+int main() {
+    struct Node* root = NULL;
+    int n, data;
+
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+
+    printf("Enter the elements to construct a binary search tree:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &data);
+        root = insert(root, data);
+    }
+
+    printf("Binary Search Tree constructed successfully.\n");
+
+    int key;
+    printf("Enter an element to search for: ");
+    scanf("%d", &key);
+
+    struct Node* result = search(root, key);
+
+    if (result)
+        printf("Key %d found in the BST.\n");
+    else
+        printf("Key %d not found in the BST.\n");
+
+    return 0;
+}
+
