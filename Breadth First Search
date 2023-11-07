@@ -1,0 +1,85 @@
+// Breadth First Search (BFS)
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_VERTICES 100
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+typedef struct Graph {
+    int numVertices;
+    Node* adjacencyList[MAX_VERTICES];
+} Graph;
+
+Graph* createGraph(int vertices) {
+    Graph* graph = (Graph*)malloc(sizeof(Graph));
+    graph->numVertices = vertices;
+
+    for (int i = 0; i < vertices; i++) {
+        graph->adjacencyList[i] = NULL;
+    }
+
+    return graph;
+}
+
+void addEdge(Graph* graph, int src, int dest) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = dest;
+    newNode->next = graph->adjacencyList[src];
+    graph->adjacencyList[src] = newNode;
+}
+
+void BFS(Graph* graph, int startVertex) {
+    int visited[MAX_VERTICES] = {0};
+    int queue[MAX_VERTICES];
+    int front = -1, rear = -1;
+
+    queue[++rear] = startVertex;
+    visited[startVertex] = 1;
+
+    while (front != rear) {
+        int currentVertex = queue[++front];
+        printf("Visited: %d\n", currentVertex);
+
+        Node* temp = graph->adjacencyList[currentVertex];
+        while (temp != NULL) {
+            int adjVertex = temp->data;
+            if (!visited[adjVertex]) {
+                queue[++rear] = adjVertex;
+                visited[adjVertex] = 1;
+            }
+            temp = temp->next;
+        }
+    }
+}
+
+int main() {
+    int numVertices, numEdges;
+
+    printf("Enter the number of vertices: ");
+    scanf("%d", &numVertices);
+
+    Graph* graph = createGraph(numVertices);
+
+    printf("Enter the number of edges: ");
+    scanf("%d", &numEdges);
+
+    printf("Enter the edges (source destination):\n");
+    for (int i = 0; i < numEdges; i++) {
+        int src, dest;
+        scanf("%d %d", &src, &dest);
+        addEdge(graph, src, dest);
+    }
+
+    int startVertex;
+    printf("Enter the starting vertex for BFS: ");
+    scanf("%d", &startVertex);
+
+    printf("Breadth-First Search starting from vertex %d:\n", startVertex);
+    BFS(graph, startVertex);
+
+    return 0;
+}
